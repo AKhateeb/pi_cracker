@@ -26,8 +26,9 @@ SECRET_KEY = '&@sxb8r5z9lch9n5cycw2u@y5@0=_n6twn1nt4kt2-muq^i4u2'
 DEBUG = True
 
 
-from socket import gethostname, gethostbyname 
-ALLOWED_HOSTS = [ gethostname(), gethostbyname(gethostname()), ] 
+# from socket import gethostname, gethostbyname 
+# ALLOWED_HOSTS = [ gethostname(), gethostbyname(gethostname()), ] 
+ALLOWED_HOSTS = [ '*' ] 
 # ALLOWED_HOSTS = ['192.168.0.2', '127.0.0.1', 'raspberrypi','172.11.11.28']
 
 
