@@ -1,4 +1,6 @@
+import re
 from django.shortcuts import render
+import instagram
 
 cracker = None
 current_password = "xxxx"
@@ -9,5 +11,5 @@ def index(request):
 
 def start(request):
     username = request.GET.get('username', None)
-    if username:
+    if username and re.match(r"^[a-zA-Z0-9._]+$", username):
         cracker = ""

@@ -47,9 +47,9 @@
       <form action="/instagram/set">
         <div class="form-group">
           <br>
-          <input autocomplete="off" autofocus type="text" class="form-control" id="username" aria-describedby="username"
+          <input autocomplete="off" autofocus type="text" pattern=".{3,30}" required class="form-control" id="username" aria-describedby="username"
             placeholder="Enter user name">
-          <h6 class="form-text text-muted">https://www.instagram.com/<span class="text-danger">we-find-username-here</span>/</h6>
+          <h6 class="form-text text-muted">https://www.instagram.com/<span class="text-danger">user name</span>/</h6>
         </div>
         <button type="submit" class="btn btn-dark">Go!</button>
       </form>
