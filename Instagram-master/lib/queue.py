@@ -3,7 +3,7 @@
 # Description: Proxy scraper
 
 from requests import get
-# from bs4 import BeautifulSoup as bs 
+from bs4 import BeautifulSoup as bs 
 
 class Queue(object):
 

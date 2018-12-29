@@ -1,7 +1,6 @@
 # Date: 05/05/2018
 # Author: Pure-L0G1C
 # Description: Bruteforce Instagram
-
 from time import sleep 
 from os.path import exists
 from sys import exit, version 
@@ -9,8 +8,10 @@ from lib.bruter import Bruter
 from lib.session import Session 
 from argparse import ArgumentParser
 
+
+
 def _input(msg):
- return raw_input(msg).lower() if int(version.split()[0].split('.')[0]) == 2 else input(msg).lower()
+ return input(msg).lower() if int(version.split()[0].split('.')[0]) == 2 else input(msg).lower()
 
 def main():
 

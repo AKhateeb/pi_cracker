@@ -18,7 +18,6 @@ class Spyder(object):
  def proxy_manager(self):
   while self.isAlive:
    while all([self.isAlive, self.proxies.qsize]):pass 
-   
    if not self.isAlive:break
    
    self.proxies = self.scraper.scrape(ssl_proxies=True)    

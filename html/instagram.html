@@ -1,64 +1,218 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pi Cracker - Instagram</title>
-<link rel="stylesheet" href="{% static 'css/bootstrap4-bubblegum.css' %}">
+    <title>Pi Cracker</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-<link href="https://fonts.googleapis.com/css?family=Chicle|Open+Sans" rel="stylesheet">
-<link rel="stylesheet" href="css/bootstrap4-bubblegum.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Chicle|Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap4-bubblegum.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
 
   </head>
-  <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-    data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
-    aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand" href="{% url 'home:index' %}">Pi Cracker</a>
 
-  <div class="collapse navbar-collapse  navbar-fixed-top" id="navbarTogglerDemo03">
-    <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home:index' %}">Home
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'instagram:index' %}">Instagram</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#!">Facebook</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search"> -->
-    </form>
-  </div>
-</nav>
-<div class="row">
-  <div class="col-md-3 block"></div>
-    <div class="text-center col-md-6 block">
-      <form action="/instagram/set">
-        <div class="form-group">
-          <br>
-          <input autocomplete="off" autofocus type="text" pattern=".{3,30}" required class="form-control" id="username" aria-describedby="username"
-            placeholder="Enter user name">
-          <h6 class="form-text text-muted">https://www.instagram.com/<span class="text-danger">user name</span>/</h6>
-        </div>
-        <button type="submit" class="btn btn-dark">Go!</button>
-      </form>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+        aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home:index' %}">Pi Cracker</a>
+
+      <div class="collapse navbar-collapse  navbar-fixed-top" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home:index' %}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'instagram:index' %}">Instagram</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#!">Facebook</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="row jumbotron">
+      <div class="col-md-3 block"></div>
+      <div class="text-center col-md-6 block"  id="username_input_container">
+        <form>
+          <div class="form-group">
+            <br>
+            <input autocomplete="off" autofocus type="text" pattern=".{3,30}" required class="form-control" id="username"
+              name="username" placeholder="Enter user name">
+            <h6 class="form-text text-muted">https://www.instagram.com/<span class="text-danger">user name</span>/</h6>
+          </div>
+          <button type="submit" id="btn_go_cracking" class="btn btn-dark">Go cracking!</button>
+        </form>
+      </div>
     </div>
-  </div>
+    <div class="container" id="btn_control_container" style="display: none">
+      <h3 class="text-center">Cracking Process</h3>
+      <h4 class="text-center">Username: <strong class="text-primary" id="txt_username"></strong></h4>
+      <br>
+      <h6 class="text-center">Password Length: <strong class="text-danger" id="txt_pass_length">6</strong></h6>
+      <hr />
+      <div class="text-center">
+        <button type="button" id="btn_start" class="btn" data-toggle="tooltip" data-placement="top" title="Start/Pause"
+          onclick='buttonStart()'>
+          <i class="fa fa-play"></i>
+        </button>
+
+        <button type="button" id="btn_stop" class="btn" data-toggle="tooltip" data-placement="top" title="Stop" onclick='buttonStop()'>
+          <i class="fa fa-stop"></i>
+        </button>
+
+        <button type="button" id="btn_next_10_pwd" class="btn" data-toggle="tooltip" data-placement="top" title="next 10 passwords"
+          onclick='buttonNextTenPasswords()'>
+          <i class="fa fa-forward"></i>
+        </button>
+        <button type="button" id="btn_increase_pwd_length" class="btn" data-toggle="tooltip" data-placement="top" title="Increase password length"
+          onclick='buttonIncreasePasswordLength()'>
+          <i class="fa fa-fast-forward"></i>
+        </button>
+<br>
+        <h1 id="password" class="text-danger">?</h1>
+      </div>
+    </div>
+
+    <footer>
+      <p class="text-center"><small>Designed By: &nbsp;<a href="https://www.facebook.com/Abdulkader.ITE" target="_blank">Abdulkader
+            khateeb</a></small></p>
+    </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js"></script>
+
+    <script>
+      var state = 'stop';
+
+      // setInterval(() => {
+      //   $.ajax({
+      //     type: "GET",
+      //     url: "{% url 'instagram:check_status' %}",
+      //     dataType: "json",
+      //     success: function (response) {
+      //       console.log(response);
+      //     }
+      //   });
+      // }, 20000);
+
+      $("#btn_go_cracking").on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: "GET",
+          url: "{% url 'instagram:set_username' %}",
+          data: { username: $("input[name=username").val() },
+          dataType: "json",
+          success: function (response) {
+            console.log(response);
+            if (response.result) {
+              $("#btn_control_container").show(400);
+              $("#btn_go_cracking").hide(400);
+              $("input[name=username]").attr('disabled','disabled');
+              $("#txt_username").html(response.username);
+            } else {
+              iziToast.error({
+                title: 'Username',
+                message: 'is not valid, please check it again',
+              });
+            }
+          }
+        });
+      })
+
+      function buttonIncreasePasswordLength() {
+        state = 'more_len';
+        push_state();
+      }
+
+      function buttonNextTenPasswords() {
+        state = 'next10';
+        push_state();
+      }
+
+      function buttonStart() {
+        if (state == 'stop') {
+          state = 'start';
+          var button = d3.select("#btn_start").classed('btn-success', true);
+          button.select("i").attr('class', "fa fa-pause");
+        }
+        else if (state == 'start' || state == 'resume') {
+          state = 'pause';
+          d3.select("#btn_start i").attr('class', "fa fa-play");
+        }
+        else if (state == 'pause') {
+          state = 'resume';
+          d3.select("#btn_start i").attr('class', "fa fa-pause");
+        }
+        console.log("button played, play was " + state);
+        push_state();
+      }
+
+      function buttonStop() {
+        state = 'stop';
+        var button = d3.select("#btn_start").classed('btn-success', false);
+        button.select("i").attr('class', "fa fa-play");
+        console.log("button stop invoked.");
+        $("#btn_go_cracking").show(400);
+        $("input[name=username]").removeAttr('disabled');
+        push_state();
+      }
+
+      function push_state() {
+        $.ajax({
+          type: "GET",
+          url: "{% url 'instagram:parse_state' %}",
+          data: { "state": state },
+          dataType: "json",
+          success: function (response) {
+            console.log(response);
+            if (typeof response.pass_length !== "undefined") {
+              $("#txt_pass_length").html(response.txt_pass_length);
+            }
+            if(!response.result){
+              iziToast.error({
+                title: state.toUpperCase(),
+                message: response.message,
+              });
+            }
+            else if (typeof response.message !== "undefined") {
+              console.log(response.message);
+              if (typeof response.message.pass_found !== "undefined") {
+                  $("#password").text(response.message.password)
+              }else{
+                iziToast.info({
+                  title: state.toUpperCase(),
+                  message: response.message,
+                });
+
+              }
+            }
+          },
+          error:function(error){
+            console.error(error);
+          }
+        });
+      }
+
+    </script>
   </body>
+
 </html>
